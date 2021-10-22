@@ -29,13 +29,16 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-app-bar-title>词云</v-app-bar-title>
       <v-spacer></v-spacer>
-      <v-btn href="https://github.com/ironheads/WordCloud" icon target="_blank">
+      <v-btn href="https://github.com/ironheads/VVordCloud" icon target="_blank">
         <v-icon>mdi-github</v-icon>
 			</v-btn>
     </v-app-bar>
-    <v-main>
+    <v-content>
       <!-- <Figure/> -->
-    </v-main>
+      <v-container fill-height overflow-hidden>
+        
+      </v-container>
+    </v-content>
   </v-app>
 </template>
 
