@@ -1,6 +1,3 @@
-<template>
-
-</template>
 
 <script>
 export default {
@@ -111,6 +108,10 @@ export default {
             type: Array,
             default: [],
         },
+        level:{
+            type: Number,
+            default: 1,
+        }
     },
     data: () => ({
         
@@ -124,6 +125,12 @@ export default {
     methods:{
 
     },
-    
+    // render: function (createElement) {
+    //     return createElement(
+    //         'h' + this.level,   // 标签名称
+    //         // this.$slots.default // 子节点数组
+    //         this.animationEasing
+    //     )
+    // }
 }
 </script>

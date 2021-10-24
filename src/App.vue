@@ -34,9 +34,8 @@
 			</v-btn>
     </v-app-bar>
     <v-content>
-      <!-- <Figure/> -->
       <v-container fill-height overflow-hidden>
-        
+        <!-- <Figure/> -->
       </v-container>
     </v-content>
   </v-app>
