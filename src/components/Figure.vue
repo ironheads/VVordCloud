@@ -114,7 +114,7 @@ export default {
         }
     },
     data: () => ({
-        
+        test: 34
     }),
 
     computed:{
@@ -125,12 +125,13 @@ export default {
     methods:{
 
     },
-    // render: function (createElement) {
-    //     return createElement(
-    //         'h' + this.level,   // 标签名称
-    //         // this.$slots.default // 子节点数组
-    //         this.animationEasing
-    //     )
-    // }
+    render: function (createElement) {
+        // let {$scopedSlots,test}=this;
+        return createElement(
+            'h' + this.level,   // 标签名称
+            // this.$slots.default // 子节点数组
+            test
+        )
+    }
 }
 </script>

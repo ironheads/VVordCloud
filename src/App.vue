@@ -35,7 +35,7 @@
     </v-app-bar>
     <v-content>
       <v-container fill-height overflow-hidden>
-        <!-- <Figure/> -->
+        <Figure/>
       </v-container>
     </v-content>
   </v-app>
@@ -83,6 +83,23 @@ export default {
   },
   created: function() {
     this.generateWordsText()
+  },
+  computed: {
+    words: function() {
+				return this.wordsText
+					.split(/[\r\n]+/)
+					.map(function(line) {
+						return /^(.+)\s+(-?\d+)$/.exec(line);
+					})
+					.filter(function(matched) {
+						return matched;
+					})
+					.map(function(matched) {
+						var text = matched[1];
+						var weight = Number(matched[2]);
+						return [text, weight];
+					});
+			},
   }
 }
 </script>
