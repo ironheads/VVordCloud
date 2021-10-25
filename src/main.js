@@ -6,10 +6,11 @@ import vuetify from './plugins/vuetify'
 import AsyncComputed from 'vue-async-computed'
 
 Vue.config.productionTip = false
+Vue.use(AsyncComputed)
 
 new Vue({
   router,
   store,
   vuetify,
   render: h => h(App)
-}).use(AsyncComputed).$mount('#app')
+}).$mount('#app')
