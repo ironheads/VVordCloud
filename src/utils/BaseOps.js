@@ -1,6 +1,5 @@
-import { isArray } from "core-js/core/array";
 
-export {Function_cast};
+export {Function_cast,String_is,Array_is,Function_is,Object_is,Undefined_is};
 
 
 
@@ -28,4 +27,16 @@ function String_is(value){
 // Array Opeartions 
 function Array_is(value){
     return Array.isArray(value);
+}
+
+//Object Operations
+function Object_is(value) {
+    if (value) {
+        return typeof value === 'object' || Function_is(value);
+    }
+    return false;
+}
+
+function Undefined_is(value) {
+    return typeof value === 'undefined';
 }
