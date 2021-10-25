@@ -1,6 +1,6 @@
-import { CeilDivisible, Undefined_is } from './basicOps'
+import { CeilDivisible, Undefined_is } from './BasicOps'
 
-export default class boundingWord {
+export default class BoundingWord {
   constructor (
     text,
     rotation,
@@ -34,7 +34,7 @@ export default class boundingWord {
   }
 
   get のfont () {
-    return boundingWord.getFont(
+    return BoundingWord.getFont(
       this.のfontStyle,
       this.のfontVariant,
       this.のfontWeight,
@@ -45,9 +45,9 @@ export default class boundingWord {
 
   get のrelativeTextWidth () {
     if (Undefined_is(this.の_relativeTextWidth)) {
-      this.の_relativeTextWidth = boundingWord.getTextWidth(
+      this.の_relativeTextWidth = BoundingWord.getTextWidth(
         this.のtext,
-        boundingWord.getFont(
+        BoundingWord.getFont(
           this.のfontStyle,
           this.のfontVariant,
           this.のfontWeight,
@@ -80,7 +80,7 @@ export default class boundingWord {
   }
 
   get のboundingBoxWidth () {
-    return boundingWord.getBoundingBoxWidth(
+    return BoundingWord.getBoundingBoxWidth(
       this.のtextWidth,
       this.のfontSize,
       this.のrotation
@@ -88,7 +88,7 @@ export default class boundingWord {
   }
 
   get のboundingBoxHeight () {
-    return boundingWord.getBoundingBoxHeight(
+    return BoundingWord.getBoundingBoxHeight(
       this.のtextWidth,
       this.のfontSize,
       this.のrotation
@@ -116,7 +116,7 @@ export default class boundingWord {
 
   get のimageData () {
     if (this.の_imageData === undefined) {
-      this.の_imageData = boundingWord.getImageData(
+      this.の_imageData = BoundingWord.getImageData(
         this.のtext,
         this.のfontStyle,
         this.のfontVariant,
@@ -199,14 +199,14 @@ export default class boundingWord {
   ) {
     const pixelSize = 4
     fontSize *= pixelSize
-    const font = boundingWord.getFont(
+    const font = BoundingWord.getFont(
       fontStyle,
       fontVariant,
       fontWeight,
       fontSize,
       fontFamily
     )
-    const textWidth = boundingWord.getBoundingBoxWidth(text, font, createCanvas)
+    const textWidth = BoundingWord.getBoundingBoxWidth(text, font, createCanvas)
     const textHeight = fontSize
     const lineWidth = padding * fontSize * 2
     const boxWidth = lineWidth + textWidth
@@ -214,7 +214,7 @@ export default class boundingWord {
     const canvas = createCanvas()
     const ctx = canvas.getContext('2d')
     const canvasWidth = CeilDivisible(
-      boundingWord.getBoundingBoxWidth(
+      BoundingWord.getBoundingBoxWidth(
         boxWidth,
         boxHeight,
         rotation
@@ -222,7 +222,7 @@ export default class boundingWord {
       pixelSize
     )
     const canvasHeight = CeilDivisible(
-      boundingWord.getBoundingBoxHeight(
+      BoundingWord.getBoundingBoxHeight(
         boxWidth,
         boxHeight,
         rotation

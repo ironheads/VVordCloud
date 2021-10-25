@@ -1,6 +1,7 @@
-import { getNormalizedFontSizeRatio } from '../../utils/fontCalculate'
-import { getNormalizedAspect } from '../../utils/aspectCalculate'
-import { Function_cast, String_is, Array_is, Function_is, Object_is, Undefined_is } from '../../utils/basicOps'
+import { getNormalizedFontSizeRatio } from '@/utils/FontCalculate'
+import { getNormalizedAspect } from '@/utils/AspectCalculate'
+import { Function_cast, String_is, Array_is, Function_is, Object_is, Undefined_is } from '@/utils/BasicOps'
+import BoundingWord from '@/utils/BoundingWord'
 
 export default {
   get (context) {
@@ -82,6 +83,29 @@ export default {
         if (Undefined_is(color)) {
           color = getDefaultColor(word, index, words)
         }
+        const boundingWord = new BoundingWord(
+          text,
+          (() => {
+            switch (rotationUnit) {
+              case 'turn':
+                return rotation * 2 * Math.PI
+              case 'deg':
+                return rotation * 2 * Math.PI / 360
+            }
+            return rotation
+          })(),
+          fontFamily,
+          fontWeight,
+          fontVariant,
+          fontStyle,
+          createCanvas
+        )
+        Object.assign(boundingWord, {
+          のword: word,
+          のweight: weight,
+          のcolor: color
+        })
+        return boundingWord
       })
     }
   }

@@ -106,7 +106,7 @@ export default {
 
     words: {
       type: Array,
-      default: []
+      default: () => { return [] }
     },
     level: {
       type: Number,
@@ -124,7 +124,7 @@ export default {
   },
   methods: {
 
-  },
+  }
   // render: function (createElement) {
   //   // let {$scopedSlots,test}=this;
   //   return createElement(
