@@ -107,6 +107,36 @@ export default {
         })
         return boundingWord
       })
+      return Promise
+        .resolve()
+        .then(() =>
+        {
+          return Promise
+            .all(
+              words.map(
+                ({
+                  のfontFamily,
+                  のfontStyle,
+                  のfontWeight,
+                  のtext
+                }) => {
+                  return loadFont(
+                    のfontFamily,
+                    のfontStyle,
+                    のfontWeight,
+                    のtext
+                  )
+                }
+            )
+          )
+        }).then(
+          () => {
+            words = words.filter(({ のtextWidth }) => { return のtextWidth > 0 })
+              .sort((a,b) => {return b.のweight - a.のweight})
+          }
+
+        )
+      
     }
   }
 }
