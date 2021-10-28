@@ -132,7 +132,13 @@ export default {
         }).then(
           () => {
             words = words.filter(({ のtextWidth }) => { return のtextWidth > 0 })
-              .sort((a,b) => {return b.のweight - a.のweight})
+              .sort((a, b) => { return b.のweight - a.のweight })
+            if (words.length > 0) {
+              let biggestWord = words[0]
+              let smallestWord = words[words.length - 1]
+              let biggestWeight = biggestWord.のweight
+              let smallestWeight = smallestWord.のweight
+            }
           }
 
         )
