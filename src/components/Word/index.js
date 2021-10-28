@@ -12,7 +12,7 @@ export default {
       text,
       weight,
       rotation,
-      ratationUnit,
+      rotationUnit,
       fontFamily,
       fontWeight,
       fontVariant,
@@ -109,8 +109,7 @@ export default {
       })
       return Promise
         .resolve()
-        .then(() =>
-        {
+        .then(() => {
           return Promise
             .all(
               words.map(
@@ -127,22 +126,26 @@ export default {
                     のtext
                   )
                 }
+              )
             )
-          )
         }).then(
           () => {
             words = words.filter(({ のtextWidth }) => { return のtextWidth > 0 })
               .sort((a, b) => { return b.のweight - a.のweight })
             if (words.length > 0) {
-              let biggestWord = words[0]
-              let smallestWord = words[words.length - 1]
-              let biggestWeight = biggestWord.のweight
-              let smallestWeight = smallestWord.のweight
+              const biggestWord = words[0]
+              const smallestWord = words[words.length - 1]
+              const minWeight = biggestWord.のweight
+              const maxWeight = smallestWord.のweight
+              // TODO: different ways to change weights
+              words.forEach(word => {
+                word.のweight = (word.のweight - minWeight + 1)
+              })
+              
             }
           }
 
         )
-      
     }
   }
 }
