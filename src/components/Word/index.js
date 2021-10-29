@@ -141,6 +141,7 @@ export default {
               words.forEach(word => {
                 word.のweight = (word.のweight - minWeight + 1)
               })
+              // TODO: need to try , (AsyncComputed also need to try)
               const wordPositionWorker = new Worker('../../utils/PutWord.js')
               const progress = {
                 completedWords: 0,
