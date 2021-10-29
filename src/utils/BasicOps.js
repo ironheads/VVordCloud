@@ -1,5 +1,5 @@
 
-export { castFunction, isString, isArray, isFunction, isObject, isUndefined, CeilDivisible }
+export { castFunction, isString, isArray, isFunction, isObject, isUndefined, CeilDivisible, workerCall }
 
 // Function Operations
 function isFunction (value) {
@@ -40,4 +40,32 @@ function isUndefined (value) {
 
 function CeilDivisible (num, div) {
   return Math.ceil(num / div) * div
+}
+
+// call worker's function and get information (like rpc)
+function workerCall (worker, data) {
+  worker.postMessage(data)
+  return getWorkerMessage(worker)
+}
+
+// receive data from worker
+function getWorkerMessage (worker) {
+  return new Promise(
+    (resolve, reject) => {
+      const dispose = () => {
+        worker.removeEventListener('message', messageHandler)
+        worker.removeEventListener('error', errorHandler)
+      }
+      const messageHandler = ({ data }) => {
+        dispose()
+        resolve(data)
+      }
+      const errorHandler = ({ error }) => {
+        dispose()
+        reject(error)
+      }
+      worker.addEventListener('message', messageHandler)
+      worker.addEventListener('error', errorHandler)
+    }
+  )
 }

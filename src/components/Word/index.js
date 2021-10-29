@@ -1,10 +1,10 @@
 import { getNormalizedFontSizeRatio } from '@/utils/FontCalculate'
 import { getNormalizedAspect } from '@/utils/AspectCalculate'
-import { castFunction, isString, isArray, isFunction, isObject, isUndefined } from '@/utils/BasicOps'
+import { castFunction, isString, isArray, isFunction, isObject, isUndefined, workerCall } from '@/utils/BasicOps'
 import BoundingWord from '@/utils/BoundingWord'
-
+// import PutWord from '@/utils/PutWord'
 export default {
-  get (context) {
+  get () {
     let {
       elementWidth,
       elementHeight,
@@ -141,7 +141,35 @@ export default {
               words.forEach(word => {
                 word.のweight = (word.のweight - minWeight + 1)
               })
+              const wordPositionWorker = new Worker('../../utils/PutWord.js')
+              const progress = {
+                completedWords: 0,
+                totalWords: words.length
+              }
+              return Promise
+                .resolve()
+                .then(
+                  () => {
+                    this.progress = progress
+                    return workerCall(wordPositionWorker, { name: 'setAspect', args: [elementAspect] })
+                  }
+                )
+                .then(
+                  () => {
+                    ++progress.completedWords
+                    let promise = Promise.resolve()
+                    words.reduce(
+                      (previousWord,currentWord,index) => {
+                        promise=promise
+                          .then(
+                            () => {
 
+                            }
+                          )
+                      }
+                    )
+                  }
+                )
             }
           }
 
