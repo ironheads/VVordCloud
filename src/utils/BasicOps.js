@@ -1,40 +1,40 @@
 
-export { Function_cast, String_is, Array_is, Function_is, Object_is, Undefined_is, CeilDivisible }
+export { castFunction, isString, isArray, isFunction, isObject, isUndefined, CeilDivisible }
 
 // Function Operations
-function Function_is (value) {
+function isFunction (value) {
   return typeof value === 'function'
 }
 
-function Function_cast (value) {
-  return Function_is(value) ? value : Function_constant(value)
+function castFunction (value) {
+  return isFunction(value) ? value : constFunction(value)
 }
 
-function Function_constant (value) {
+function constFunction (value) {
   return function () {
     return value
   }
 }
 
 // String Operations
-function String_is (value) {
+function isString (value) {
   return typeof value === 'string'
 }
 
 // Array Opeartions
-function Array_is (value) {
+function isArray (value) {
   return Array.isArray(value)
 }
 
 // Object Operations
-function Object_is (value) {
+function isObject (value) {
   if (value) {
-    return typeof value === 'object' || Function_is(value)
+    return typeof value === 'object' || isFunction(value)
   }
   return false
 }
 
-function Undefined_is (value) {
+function isUndefined (value) {
   return typeof value === 'undefined'
 }
 

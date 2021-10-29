@@ -1,4 +1,4 @@
-import { CeilDivisible, Undefined_is } from './BasicOps'
+import { CeilDivisible, isUndefined } from './BasicOps'
 
 export default class BoundingWord {
   constructor (
@@ -45,7 +45,7 @@ export default class BoundingWord {
   }
 
   get のrelativeTextWidth () {
-    if (Undefined_is(this.の_relativeTextWidth)) {
+    if (isUndefined(this.の_relativeTextWidth)) {
       this.の_relativeTextWidth = BoundingWord.getTextWidth(
         this.のtext,
         BoundingWord.getFont(

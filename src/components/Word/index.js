@@ -1,6 +1,6 @@
 import { getNormalizedFontSizeRatio } from '@/utils/FontCalculate'
 import { getNormalizedAspect } from '@/utils/AspectCalculate'
-import { Function_cast, String_is, Array_is, Function_is, Object_is, Undefined_is } from '@/utils/BasicOps'
+import { castFunction, isString, isArray, isFunction, isObject, isUndefined } from '@/utils/BasicOps'
 import BoundingWord from '@/utils/BoundingWord'
 
 export default {
@@ -28,15 +28,15 @@ export default {
     fontSizeRatio = getNormalizedFontSizeRatio(fontSizeRatio)
     const elementAspect = getNormalizedAspect([elementWidth, elementHeight])
     if (elementHeight > 0 && elementWidth > 0) {
-      const getDefaultText = Function_cast(text)
-      const getDefaultWeight = Function_cast(weight)
-      const getDefaultRotation = Function_cast(rotation)
-      const getDefaultRotationUnit = Function_cast(rotationUnit)
-      const getDefaultFontFamily = Function_cast(fontFamily)
-      const getDefaultFontWeight = Function_cast(fontWeight)
-      const getDefaultFontVariant = Function_cast(fontVariant)
-      const getDefaultFontStyle = Function_cast(fontStyle)
-      const getDefaultColor = Function_cast(color)
+      const getDefaultText = castFunction(text)
+      const getDefaultWeight = castFunction(weight)
+      const getDefaultRotation = castFunction(rotation)
+      const getDefaultRotationUnit = castFunction(rotationUnit)
+      const getDefaultFontFamily = castFunction(fontFamily)
+      const getDefaultFontWeight = castFunction(fontWeight)
+      const getDefaultFontVariant = castFunction(fontVariant)
+      const getDefaultFontStyle = castFunction(fontStyle)
+      const getDefaultColor = castFunction(color)
       words = words.map((word, index) => {
         let text
         let weight
@@ -48,39 +48,39 @@ export default {
         let fontStyle
         let color
         if (word) {
-          if (String_is(word)) {
+          if (isString(word)) {
             text = word
-          } else if (Array_is(word)) {
+          } else if (isArray(word)) {
             [text, weight] = word
-          } else if (Object_is(word)) {
+          } else if (isObject(word)) {
             ({ text, weight, rotation, rotationUnit, fontFamily, fontWeight, fontVariant, fontStyle, color } = word)
           }
         }
-        if (Undefined_is(text)) {
+        if (isUndefined(text)) {
           text = getDefaultText(word, index, words)
         }
-        if (Undefined_is(weight)) {
+        if (isUndefined(weight)) {
           weight = getDefaultWeight(word, index, words)
         }
-        if (Undefined_is(rotation)) {
+        if (isUndefined(rotation)) {
           rotation = getDefaultRotation(word, index, words)
         }
-        if (Undefined_is(rotationUnit)) {
+        if (isUndefined(rotationUnit)) {
           rotationUnit = getDefaultRotationUnit(word, index, words)
         }
-        if (Undefined_is(fontFamily)) {
+        if (isUndefined(fontFamily)) {
           fontFamily = getDefaultFontFamily(word, index, words)
         }
-        if (Undefined_is(fontWeight)) {
+        if (isUndefined(fontWeight)) {
           fontWeight = getDefaultFontWeight(word, index, words)
         }
-        if (Undefined_is(fontVariant)) {
+        if (isUndefined(fontVariant)) {
           fontVariant = getDefaultFontVariant(word, index, words)
         }
-        if (Undefined_is(fontStyle)) {
+        if (isUndefined(fontStyle)) {
           fontStyle = getDefaultFontStyle(word, index, words)
         }
-        if (Undefined_is(color)) {
+        if (isUndefined(color)) {
           color = getDefaultColor(word, index, words)
         }
         const boundingWord = new BoundingWord(
@@ -141,7 +141,7 @@ export default {
               words.forEach(word => {
                 word.のweight = (word.のweight - minWeight + 1)
               })
-              
+
             }
           }
 
