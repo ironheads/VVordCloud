@@ -2,7 +2,9 @@ import { getNormalizedFontSizeRatio } from '@/utils/FontCalculate'
 import { getNormalizedAspect } from '@/utils/AspectCalculate'
 import { castFunction, isString, isArray, isFunction, isObject, isUndefined, workerCall } from '@/utils/BasicOps'
 import BoundingWord from '@/utils/BoundingWord'
-// import PutWord from '@/utils/PutWord'
+// import PutWord from 'stringify!@/utils/PutWord'
+
+const renderingFontSize = 4
 export default {
   get () {
     let {
@@ -139,10 +141,12 @@ export default {
               const maxWeight = smallestWord.のweight
               // TODO: different ways to change weights
               words.forEach(word => {
-                word.のweight = (word.のweight - minWeight + 1)
+                word.のfontSize = (word.のweight - minWeight + 1) * renderingFontSize
               })
+
               // TODO: need to try , (AsyncComputed also need to try)
-              const wordPositionWorker = new Worker('../../utils/PutWord.js')
+              const wordPositionWorker = new Worker('@/utils/PutWord.js')
+              // const wordPositionWorker = new Worker(PutWord)
               const progress = {
                 completedWords: 0,
                 totalWords: words.length
@@ -152,23 +156,99 @@ export default {
                 .then(
                   () => {
                     this.progress = progress
-                    return workerCall(wordPositionWorker, { name: 'setAspect', args: [elementAspect] })
+                    return workerCall(wordPositionWorker, { name: 'setAspect', args: [elementAspect] }).then(() => workerCall(wordPositionWorker, { name: 'clear' })).then(()=>{})
                   }
                 )
                 .then(
                   () => {
                     ++progress.completedWords
                     let promise = Promise.resolve()
-                    words.reduce(
-                      (previousWord,currentWord,index) => {
-                        promise=promise
+                    words.forEach(
+                      (currentWord, index) => {
+                        promise = promise
                           .then(
                             () => {
-
+                              currentWord.のpadding = spacing
+                              return workerCall(wordPositionWorker, { name: 'wordPosition', args: [currentWord.のimagePixels, currentWord.のimageLeft, currentWord.のimageTop] })
+                            }
+                          )
+                          .then(
+                            ([posX, posY]) => {
+                              ++progress.completedWords
+                              currentWord.のimageLeft = posX
+                              currentWord.のimageTop = posY
+                              currentWord.のpadding = 0
+                              return workerCall(wordPositionWorker, { name: 'put', args: [currentWord.のimagePixels, currentWord.のimageLeft, currentWord.のimageTop] })
                             }
                           )
                       }
                     )
+                    return promise
+                  }
+                )
+                .then(
+                  () => {
+                    return workerCall(wordPositionWorker, { name: 'getBounds' })
+                  }
+                ).then(
+                  ({ left, top, width, height }) => {
+                    if (width > 0 && height > 0) {
+                      const scaleFactor = Math.min(elementWidth / width, elementHeight / height)
+                      words.forEach(
+                        (word) => {
+                          word.のleft -= left
+                          word.のtop -= top
+                          word.のfontSize *= scaleFactor
+                        }
+                      )
+                    }
+                    const keys = new Set()
+                    return words.map(
+                      (
+                        {
+                          のword: word,
+                          のtext: text,
+                          のweight: weight,
+                          のrotation: rotation,
+                          のfontFamily: fontFamily,
+                          のfontWeight: fontWeight,
+                          のfontVariant: fontVariant,
+                          のfontStyle: fontStyle,
+                          のfont: font,
+                          のleft: left,
+                          のtop: top,
+                          のcolor: color
+                        }
+                      ) => {
+                        const key = JSON.stringify([
+                          text,
+                          fontFamily,
+                          fontWeight,
+                          fontVariant,
+                          fontStyle
+                        ])
+                        keys.add(key)
+                        return {
+                          key,
+                          word,
+                          text,
+                          weight,
+                          rotation,
+                          font,
+                          color,
+                          left,
+                          top
+                        }
+                      }
+                    )
+                  }
+                )
+                .finally(
+                  () => { wordPositionWorker.terminate() }
+                )
+                .finally(
+                  () => {
+                    this.progress = null
                   }
                 )
             }
@@ -176,5 +256,9 @@ export default {
 
         )
     }
+  },
+
+  default: () => {
+    return []
   }
 }

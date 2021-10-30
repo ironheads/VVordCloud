@@ -1,5 +1,9 @@
+<template>
+  <div>somethinghappens</div>
+</template>>
 
 <script>
+import Word from '@/components/Word'
 export default {
   name: 'wordCloudFigure',
   props: {
@@ -33,7 +37,8 @@ export default {
     createWorker: {
       type: Function,
       default (code) {
-        return new Worker(URL.createObjectURL(new Blob([code])))
+        // return new Worker(URL.createObjectURL(new Blob([code])))
+        return new Worker(code)
       }
     },
 
@@ -91,7 +96,7 @@ export default {
 
     spacing: {
       type: Number,
-      default: 0
+      default: 0.1
     },
 
     text: {
@@ -117,11 +122,23 @@ export default {
     test: 34
   }),
 
+  asyncComputed: {
+    Word
+  },
+
+  watch: {
+    Word: (val) => {
+      this.$emit('Update:Word', val)
+    }
+  },
+
   computed: {
 
   },
   components: {
+
   },
+
   methods: {
 
   }

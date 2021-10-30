@@ -22,7 +22,7 @@
           color="primary"
           @click="generateWordsText"
         >generate randomly</v-btn>
-      </div>	
+      </div>
       <v-divider></v-divider>
     </v-navigation-drawer>
     <v-app-bar app dark>
@@ -33,73 +33,72 @@
         <v-icon>mdi-github</v-icon>
 			</v-btn>
     </v-app-bar>
-    <v-content>
+    <v-main>
       <v-container fill-height overflow-hidden>
         <Figure/>
       </v-container>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
-
 
 <script>
 import Figure from './components/Figure'
 import 'chance'
 export default {
   name: 'App',
-  props:{
+  props: {
   },
   data: () => ({
     drawer: false,
-    theme: "light",
+    theme: 'light',
     progressVisible: true,
-    wordsText: undefined,
+    wordsText: undefined
   }),
   components: {
     Figure
   },
   methods: {
-    generateWordsText: function() {
-        var chance = new Chance(Math.random);
-				this.wordsText = [
-					[9, 1, 3],
-					[4, 5, 15],
-					[2, 5, 15],
-					[1, 25, 150],
-				]
-					.reduce(function(returns, item) {
-						var weight = item[0];
-						var minCount = item[1];
-						var maxCount = item[2];
-						var count = chance.integer({min: minCount, max: maxCount});
-						chance.n(function() {
-							var word = chance.word();
-							returns.push(word+' '+weight);
-						}, count);
-						return returns;
-					}, [])
-					.join('\n');
-			}
+    generateWordsText: function () {
+      var chance = new Chance(Math.random)
+      this.wordsText = [
+        [9, 1, 3],
+        [4, 5, 15],
+        [2, 5, 15],
+        [1, 25, 150]
+      ]
+        .reduce(function (returns, item) {
+          var weight = item[0]
+          var minCount = item[1]
+          var maxCount = item[2]
+          var count = chance.integer({ min: minCount, max: maxCount })
+          chance.n(function () {
+            var word = chance.word()
+            returns.push(word + ' ' + weight)
+          }, count)
+          return returns
+        }, [])
+        .join('\n')
+    }
   },
-  created: function() {
+  created: function () {
     this.generateWordsText()
   },
   computed: {
-    words: function() {
-				return this.wordsText
-					.split(/[\r\n]+/)
-					.map(function(line) {
-						return /^(.+)\s+(-?\d+)$/.exec(line);
-					})
-					.filter(function(matched) {
-						return matched;
-					})
-					.map(function(matched) {
-						var text = matched[1];
-						var weight = Number(matched[2]);
-						return [text, weight];
-					});
-			},
+    words: function () {
+      return this.wordsText
+        .split(/[\r\n]+/)
+        .map(function (line) {
+          return /^(.+)\s+(-?\d+)$/.exec(line)
+        })
+        .filter(function (matched) {
+          return matched
+        })
+        .map(function (matched) {
+          var text = matched[1]
+          var weight = Number(matched[2])
+          return [text, weight]
+        })
+    }
   }
 }
 </script>
