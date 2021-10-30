@@ -140,8 +140,14 @@ export default {
   },
 
   methods: {
-
-  }
+    updateElementSize () {
+      const { $el } = this
+      if ($el) {
+        this.elementWidth = $el.offsetWidth
+        this.elementHeight = $el.offsetHeight
+      }
+    }
+  },
   // render: function (createElement) {
   //   // let {$scopedSlots,test}=this;
   //   return createElement(
@@ -150,5 +156,14 @@ export default {
   //     test
   //   )
   // }
+  created () {
+    console.log('mounted')
+    this.updateElementSize()
+  },
+
+  mounted () {
+    console.log('mounted')
+    this.updateElementSize()
+  }
 }
 </script>

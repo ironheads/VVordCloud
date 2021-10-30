@@ -28,8 +28,12 @@ export default {
       createWorker
     } = this
     console.log(words)
+
     fontSizeRatio = getNormalizedFontSizeRatio(fontSizeRatio)
     const elementAspect = getNormalizedAspect([elementWidth, elementHeight])
+    console.log(elementWidth)
+    console.log(elementHeight)
+    console.log(elementAspect)
     if (elementHeight > 0 && elementWidth > 0) {
       const getDefaultText = castFunction(text)
       const getDefaultWeight = castFunction(weight)
@@ -46,6 +50,8 @@ export default {
         let rotation
         let rotationUnit
         let fontFamily
+
+
         let fontWeight
         let fontVariant
         let fontStyle
