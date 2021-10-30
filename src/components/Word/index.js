@@ -7,6 +7,7 @@ import BoundingWord from '@/utils/BoundingWord'
 const renderingFontSize = 4
 export default {
   get () {
+    console.log('try to get Word')
     let {
       elementWidth,
       elementHeight,
@@ -26,7 +27,7 @@ export default {
       loadFont,
       createWorker
     } = this
-
+    console.log(words)
     fontSizeRatio = getNormalizedFontSizeRatio(fontSizeRatio)
     const elementAspect = getNormalizedAspect([elementWidth, elementHeight])
     if (elementHeight > 0 && elementWidth > 0) {
@@ -109,6 +110,7 @@ export default {
         })
         return boundingWord
       })
+      console.log('finish Bounding Word')
       return Promise
         .resolve()
         .then(() => {
@@ -156,7 +158,7 @@ export default {
                 .then(
                   () => {
                     this.progress = progress
-                    return workerCall(wordPositionWorker, { name: 'setAspect', args: [elementAspect] }).then(() => workerCall(wordPositionWorker, { name: 'clear' })).then(()=>{})
+                    return workerCall(wordPositionWorker, { name: 'setAspect', args: [elementAspect] }).then(() => workerCall(wordPositionWorker, { name: 'clear' })).then(()=>{ console.log('worker call success')})
                   }
                 )
                 .then(
@@ -256,6 +258,7 @@ export default {
 
         )
     }
+    return []
   },
 
   default: () => {

@@ -35,7 +35,7 @@
     </v-app-bar>
     <v-main>
       <v-container fill-height overflow-hidden>
-        <Figure/>
+        <Figure :words="words"> </Figure>
       </v-container>
     </v-main>
   </v-app>

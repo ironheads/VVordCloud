@@ -127,9 +127,9 @@ export default {
   },
 
   watch: {
-    Word: (val) => {
-      this.$emit('Update:Word', val)
-    }
+    // Word: (val) => {
+    //   this.$emit('Update:Word', val)
+    // }
   },
 
   computed: {
