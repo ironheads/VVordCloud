@@ -4,6 +4,7 @@
 
 <script>
 import Word from '@/components/Word'
+import BoundingWord from '@/utils/BoundingWord'
 export default {
   name: 'wordCloudFigure',
   props: {
@@ -36,9 +37,9 @@ export default {
 
     createWorker: {
       type: Function,
-      default (code) {
-        // return new Worker(URL.createObjectURL(new Blob([code])))
-        return new Worker(code)
+      default (func) {
+        return new Worker(URL.createObjectURL(new Blob([`(${func.toString()})()`])))
+        // return new Worker(code)
       }
     },
 
@@ -157,13 +158,19 @@ export default {
   //   )
   // }
   created () {
-    console.log('mounted')
-    this.updateElementSize()
+  },
+
+  beforeCreate () {
+    // console.log('beforeCreated')
+    // this.updateElementSize()
   },
 
   mounted () {
     console.log('mounted')
+    // console.log(this.$el)
     this.updateElementSize()
+
+    this.$asyncComputed.Word.update()
   }
 }
 </script>

@@ -58,6 +58,8 @@ function getWorkerMessage (worker) {
       }
       const messageHandler = ({ data }) => {
         dispose()
+        // console.log('get data')
+        // console.log(data)
         resolve(data)
       }
       const errorHandler = ({ error }) => {

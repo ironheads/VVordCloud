@@ -2,9 +2,10 @@ import { getNormalizedFontSizeRatio } from '@/utils/FontCalculate'
 import { getNormalizedAspect } from '@/utils/AspectCalculate'
 import { castFunction, isString, isArray, isFunction, isObject, isUndefined, workerCall } from '@/utils/BasicOps'
 import BoundingWord from '@/utils/BoundingWord'
-// import PutWord from 'stringify!@/utils/PutWord'
+import PutWord from '@/utils/PutWord'
 
 const renderingFontSize = 4
+const renderingFontBase = 4
 export default {
   get () {
     console.log('try to get Word')
@@ -27,7 +28,7 @@ export default {
       loadFont,
       createWorker
     } = this
-    console.log(words)
+    // console.log(words)
 
     fontSizeRatio = getNormalizedFontSizeRatio(fontSizeRatio)
     const elementAspect = getNormalizedAspect([elementWidth, elementHeight])
@@ -50,7 +51,6 @@ export default {
         let rotation
         let rotationUnit
         let fontFamily
-
 
         let fontWeight
         let fontVariant
@@ -116,7 +116,8 @@ export default {
         })
         return boundingWord
       })
-      console.log('finish Bounding Word')
+      // console.log('finish Bounding Word')
+      // console.log(words)
       return Promise
         .resolve()
         .then(() => {
@@ -129,6 +130,7 @@ export default {
                   のfontWeight,
                   のtext
                 }) => {
+                  // console.log('new word')
                   return loadFont(
                     のfontFamily,
                     のfontStyle,
@@ -138,22 +140,26 @@ export default {
                 }
               )
             )
-        }).then(
+        })
+        .catch(() => { return [] })
+        .then(
           () => {
+            console.log('finish word map')
             words = words.filter(({ のtextWidth }) => { return のtextWidth > 0 })
               .sort((a, b) => { return b.のweight - a.のweight })
             if (words.length > 0) {
               const biggestWord = words[0]
               const smallestWord = words[words.length - 1]
-              const minWeight = biggestWord.のweight
-              const maxWeight = smallestWord.のweight
+              const maxWeight = biggestWord.のweight
+              const minWeight = smallestWord.のweight
               // TODO: different ways to change weights
               words.forEach(word => {
-                word.のfontSize = (word.のweight - minWeight + 1) * renderingFontSize
+                word.のfontSize = Math.ceil((word.のweight - minWeight) / 3) * renderingFontSize + renderingFontBase
               })
 
-              // TODO: need to try , (AsyncComputed also need to try)
-              const wordPositionWorker = new Worker('@/utils/PutWord.js')
+              // (AsyncComputed also need to try)
+              // console.log(PutWord.toString())
+              const wordPositionWorker = createWorker(PutWord)
               // const wordPositionWorker = new Worker(PutWord)
               const progress = {
                 completedWords: 0,
@@ -164,28 +170,42 @@ export default {
                 .then(
                   () => {
                     this.progress = progress
-                    return workerCall(wordPositionWorker, { name: 'setAspect', args: [elementAspect] }).then(() => workerCall(wordPositionWorker, { name: 'clear' })).then(()=>{ console.log('worker call success')})
+                    return workerCall(wordPositionWorker, { name: 'setAspect', args: [elementAspect] })
+                      .then(() => { return workerCall(wordPositionWorker, { name: 'clear' }) })
+                      .then(() => { console.log('worker call success') })
                   }
                 )
                 .then(
                   () => {
-                    ++progress.completedWords
+                    // ++progress.completedWords
+                    // console.log(progress.completedWords)
+                    console.log(words)
                     let promise = Promise.resolve()
                     words.forEach(
                       (currentWord, index) => {
+                        // console.log(index)
                         promise = promise
                           .then(
                             () => {
                               currentWord.のpadding = spacing
+                              // let result = workerCall(wordPositionWorker, { name: 'wordPosition', args: [currentWord.のimagePixels, currentWord.のimageLeft, currentWord.のimageTop] })
+                              // console.log(currentWord.のimagePixels)
                               return workerCall(wordPositionWorker, { name: 'wordPosition', args: [currentWord.のimagePixels, currentWord.のimageLeft, currentWord.のimageTop] })
                             }
                           )
                           .then(
-                            ([posX, posY]) => {
+                            (data) => {
+                              // console.log('get data')
+                              // console.log(data)
+                              let posX = data[0]
+                              let posY = data[1]
+                              // const [posX, posY] = data
                               ++progress.completedWords
+                              // console.log(progress.completedWords)
                               currentWord.のimageLeft = posX
                               currentWord.のimageTop = posY
                               currentWord.のpadding = 0
+                              console.log(currentWord.のimagePixels)
                               return workerCall(wordPositionWorker, { name: 'put', args: [currentWord.のimagePixels, currentWord.のimageLeft, currentWord.のimageTop] })
                             }
                           )
@@ -200,6 +220,10 @@ export default {
                   }
                 ).then(
                   ({ left, top, width, height }) => {
+                    console.log(left)
+                    console.log(top)
+                    console.log(width)
+                    console.log(height)
                     if (width > 0 && height > 0) {
                       const scaleFactor = Math.min(elementWidth / width, elementHeight / height)
                       words.forEach(

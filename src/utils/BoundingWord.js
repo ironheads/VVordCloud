@@ -21,6 +21,8 @@ export default class BoundingWord {
     this.の_padding = 0
     this.のrelativeLeft = 0
     this.のrelativeTop = 0
+    this.の_imageData = undefined
+    // this.の_relativeTextWidth=undefined
   }
 
   get のfontSize () {
@@ -28,7 +30,7 @@ export default class BoundingWord {
   }
 
   set のfontSize (value) {
-    if (this.のfontSize !== value) {
+    if (this.の_fontSize !== value) {
       this.の_fontSize = value
       this.の_imageData = undefined
     }
@@ -58,6 +60,7 @@ export default class BoundingWord {
         this.のcreateCanvas
       )
     }
+    return this.の_relativeTextWidth
   }
 
   get のtextWidth () {
@@ -176,6 +179,7 @@ export default class BoundingWord {
     const canvas = createCanvas()
     const ctx = canvas.getContext('2d')
     ctx.font = font
+    // console.log(ctx.measureText(text).width)
     return ctx.measureText(text).width
   }
 
@@ -199,6 +203,7 @@ export default class BoundingWord {
     createCanvas
   ) {
     const pixelSize = 4
+    // console.log('getImageData')
     fontSize *= pixelSize
     const font = BoundingWord.getFont(
       fontStyle,
@@ -207,7 +212,7 @@ export default class BoundingWord {
       fontSize,
       fontFamily
     )
-    const textWidth = BoundingWord.getBoundingBoxWidth(text, font, createCanvas)
+    const textWidth = BoundingWord.getTextWidth(text, font, createCanvas)
     const textHeight = fontSize
     const lineWidth = padding * fontSize * 2
     const boxWidth = lineWidth + textWidth
