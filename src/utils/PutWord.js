@@ -45,6 +45,9 @@ export default function () {
 
   const put = (pixels, x, y) => {
     // console.log('in put word')
+    // console.log(Object.keys(_pixels).length)
+    // console.log(x)
+    // console.log(y)
     // console.log(pixels.length)
     pixels.forEach(
       (data) => {
@@ -61,10 +64,12 @@ export default function () {
       }
     )
     // console.log('out put word')
+    // console.log(Object.keys(_pixels).length)
   }
 
   function canPut (pixels, x, y) {
     // console.log('in canput')
+    // console.log(pixels.length)
     const result = pixels.every(
       (data) => {
         const posX = x + data[0]
@@ -109,35 +114,55 @@ export default function () {
     let maxX = pixelX
     let minY = pixelY
     let maxY = pixelY
+    let previousLeftX = Math.floor(minX)
+    let prevousRightX = Math.ceil(maxX)
+    let preivousTopY = Math.ceil(minY)
+    let previousBottomY = Math.ceil(maxY)
     while (true) {
       minX -= stepX
       maxX += stepX
       minY -= stepY
       maxY += stepY
-      for (let x = minX; x < maxX; ++x) {
-        const testPosition = [x, minY]
-        if (testPut(testPosition)) {
-          return testPosition
+      const leftX = Math.floor(minX)
+      const rightX = Math.ceil(maxX)
+      const topY = Math.ceil(minY)
+      const bottomY = Math.ceil(maxY)
+      if (topY < preivousTopY) {
+        for (let x = leftX; x < rightX; ++x) {
+          const testPosition = [x, topY]
+          if (testPut(testPosition)) {
+            return testPosition
+          }
         }
       }
-      for (let y = minY; y < maxY; ++y) {
-        const testPosition = [maxX, y]
-        if (testPut(testPosition)) {
-          return testPosition
+      if (rightX > prevousRightX) {
+        for (let y = topY; y < bottomY; ++y) {
+          const testPosition = [rightX, y]
+          if (testPut(testPosition)) {
+            return testPosition
+          }
         }
       }
-      for (let x = maxX; x > minX; --x) {
-        const testPosition = [x, maxY]
-        if (testPut(testPosition)) {
-          return testPosition
+      if (bottomY > previousBottomY) {
+        for (let x = rightX; x > leftX; --x) {
+          const testPosition = [x, bottomY]
+          if (testPut(testPosition)) {
+            return testPosition
+          }
         }
       }
-      for (let y = maxY; y > minY; --y) {
-        const testPosition = [minX, y]
-        if (testPut(testPosition)) {
-          return testPosition
+      if (leftX < previousLeftX) {
+        for (let y = bottomY; y > topY; --y) {
+          const testPosition = [leftX, y]
+          if (testPut(testPosition)) {
+            return testPosition
+          }
         }
       }
+      prevousRightX = rightX
+      previousBottomY = bottomY
+      previousLeftX = leftX
+      preivousTopY = topY
     }
   }
 

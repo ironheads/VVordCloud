@@ -179,7 +179,7 @@ export default {
                   () => {
                     // ++progress.completedWords
                     // console.log(progress.completedWords)
-                    console.log(words)
+                    // console.log(words)
                     let promise = Promise.resolve()
                     words.forEach(
                       (currentWord, index) => {
@@ -190,6 +190,10 @@ export default {
                               currentWord.のpadding = spacing
                               // let result = workerCall(wordPositionWorker, { name: 'wordPosition', args: [currentWord.のimagePixels, currentWord.のimageLeft, currentWord.のimageTop] })
                               // console.log(currentWord.のimagePixels)
+                              // console.log(currentWord.のimageTop)
+                              // console.log(currentWord.のimageLeft)
+                              // console.log('before')
+                              // console.log(currentWord.のimagePixels.length)
                               return workerCall(wordPositionWorker, { name: 'wordPosition', args: [currentWord.のimagePixels, currentWord.のimageLeft, currentWord.のimageTop] })
                             }
                           )
@@ -205,7 +209,8 @@ export default {
                               currentWord.のimageLeft = posX
                               currentWord.のimageTop = posY
                               currentWord.のpadding = 0
-                              console.log(currentWord.のimagePixels)
+                              // console.log('after')
+                              // console.log(currentWord.のimagePixels.length)
                               return workerCall(wordPositionWorker, { name: 'put', args: [currentWord.のimagePixels, currentWord.のimageLeft, currentWord.のimageTop] })
                             }
                           )
