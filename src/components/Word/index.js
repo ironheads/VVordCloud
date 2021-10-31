@@ -225,10 +225,10 @@ export default {
                   }
                 ).then(
                   ({ left, top, width, height }) => {
-                    console.log(left)
-                    console.log(top)
-                    console.log(width)
-                    console.log(height)
+                    // console.log(left)
+                    // console.log(top)
+                    // console.log(width)
+                    // console.log(height)
                     if (width > 0 && height > 0) {
                       const scaleFactor = Math.min(elementWidth / width, elementHeight / height)
                       words.forEach(
@@ -264,6 +264,7 @@ export default {
                           fontVariant,
                           fontStyle
                         ])
+                        console.log(key)
                         keys.add(key)
                         return {
                           key,
@@ -281,7 +282,10 @@ export default {
                   }
                 )
                 .finally(
-                  () => { wordPositionWorker.terminate() }
+                  () => {
+                    wordPositionWorker.terminate()
+                    // console.log(words)
+                  }
                 )
                 .finally(
                   () => {
@@ -290,7 +294,6 @@ export default {
                 )
             }
           }
-
         )
     }
     return []

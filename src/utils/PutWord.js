@@ -15,9 +15,8 @@ export default function () {
   }
 
   clear()
-  // console.log('worker created')
+
   const getCenterX = () => {
-    // console.log('get X')
     return Math.ceil((_minLeft + _maxRight) / 2)
   }
   const getCenterY = () => {
@@ -44,11 +43,7 @@ export default function () {
   }
 
   const put = (pixels, x, y) => {
-    // console.log('in put word')
-    // console.log(Object.keys(_pixels).length)
-    // console.log(x)
-    // console.log(y)
-    // console.log(pixels.length)
+
     pixels.forEach(
       (data) => {
         const pixelX = data[0]
@@ -63,13 +58,11 @@ export default function () {
         _maxBottom = Math.max(posY + 1, _maxBottom)
       }
     )
-    // console.log('out put word')
-    // console.log(Object.keys(_pixels).length)
+
   }
 
   function canPut (pixels, x, y) {
-    // console.log('in canput')
-    // console.log(pixels.length)
+
     const result = pixels.every(
       (data) => {
         const posX = x + data[0]
@@ -82,10 +75,7 @@ export default function () {
   }
 
   function findPosition (pixelX, pixelY, testPut) {
-    // console.log('try to get position')
-    // console.log(pixelX)
-    // console.log(pixelY)
-    // let [pixelX, pixelY] = _data
+
     const aspectWidth = _aspect[0]
     const aspectHeight = _aspect[1]
 
