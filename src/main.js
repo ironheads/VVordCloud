@@ -4,9 +4,10 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import AsyncComputed from 'vue-async-computed'
-
+import animate from 'animate.css'
 Vue.config.productionTip = false
 Vue.use(AsyncComputed)
+Vue.use(animate)
 
 new Vue({
   router,
