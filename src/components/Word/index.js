@@ -284,6 +284,10 @@ export default {
                     )
                   }
                 )
+                .catch((err) => {
+                  console.log('cope word error: ', err)
+                  return []
+                })
                 .finally(
                   () => {
                     wordPositionWorker.terminate()

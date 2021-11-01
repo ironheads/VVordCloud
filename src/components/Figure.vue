@@ -1,6 +1,3 @@
-<template>
-  <div>somethinghappens</div>
-</template>>
 
 <script>
 import Word from '@/components/Word'
@@ -149,14 +146,7 @@ export default {
       }
     }
   },
-  // render: function (createElement) {
-  //   // let {$scopedSlots,test}=this;
-  //   return createElement(
-  //     'h' + this.level, // 标签名称
-  //     // this.$slots.default // 子节点数组
-  //     test
-  //   )
-  // }
+
   created () {
   },
 
@@ -171,6 +161,124 @@ export default {
     this.updateElementSize()
 
     this.$asyncComputed.Word.update()
+  },
+  render (createElement) {
+    let {
+      $scopedSlots,
+      animationEasing,
+      animationOptions,
+      Word,
+      separateAnimationDelay,
+      separateAnimationDuration
+    } = this
+    // console.log($scopedSlots)
+    $scopedSlots = {
+      default ({ text }) {
+        // console.log(text)
+        return text
+      },
+      ...$scopedSlots
+    }
+    // console.log($scopedSlots)
+    return createElement(
+      'div',
+      {
+        style: {
+          height: '100%',
+          position: 'relative',
+          width: '100%'
+        }
+      },
+      [createElement(
+        'div',
+        {
+          style: {
+            bottom: '50%',
+            position: 'absolute',
+            right: '50%',
+            transform: 'translate(50%,50%)'
+          }
+        },
+        Word.map(({
+          color,
+          font,
+          left,
+          rotation,
+          text,
+          top,
+          weight,
+          word
+        }, index) => createElement(
+          'transition',
+          { ...animationOptions },
+          [createElement(
+            'div',
+            {
+              key: index,
+              style: {
+                left: `${left}px`,
+                position: 'absolute',
+                top: `${top}px`,
+                ...((separateAnimationDuration > 0)
+                  ? {
+                    animation: [
+                        `${separateAnimationDuration}ms`,
+                        animationEasing,
+                        `${separateAnimationDelay * index}ms`
+                    ].join(' '),
+                    transition: [
+                      'all',
+                        `${separateAnimationDuration}ms`,
+                        animationEasing,
+                        `${separateAnimationDelay * index}ms`
+                    ].join(' ')
+                  }
+                  : {}
+                )
+              }
+            },
+            [createElement(
+              'div',
+              {
+                style: {
+                  bottom: '50%',
+                  color: color,
+                  font: font,
+                  position: 'absolute',
+                  right: '50%',
+                  transform: [
+                    'translate(50%,50%)',
+                    `rotate(${rotation}rad)`
+                  ].join(' '),
+                  whiteSpace: 'nowrap',
+                  ...((separateAnimationDuration > 0)
+                    ? {
+                      transition: [
+                        'all',
+                          `${separateAnimationDuration}ms`,
+                          animationEasing,
+                          `${separateAnimationDelay * index}ms`
+                      ].join(' ')
+                    }
+                    : {}
+                  )
+                }
+              },
+              [$scopedSlots.default({
+                color,
+                font,
+                left,
+                text,
+                top,
+                weight,
+                word
+              })]
+            )]
+          )]
+        ))
+      )]
+    )
   }
+
 }
 </script>
