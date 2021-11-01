@@ -13,7 +13,7 @@ export default class BoundingWord {
     this.のtext = text
     this.のrotation = rotation
     this.のfontFamily = fontFamily
-    this.のfontWeight = fontFamily
+    this.のfontWeight = fontWeight
     this.のfontVariant = fontVariant
     this.のfontStyle = fontStyle
     this.のcreateCanvas = createCanvas

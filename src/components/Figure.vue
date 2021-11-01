@@ -4,7 +4,7 @@
 
 <script>
 import Word from '@/components/Word'
-import BoundingWord from '@/utils/BoundingWord'
+
 export default {
   name: 'wordCloudFigure',
   props: {

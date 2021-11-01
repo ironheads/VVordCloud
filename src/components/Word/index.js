@@ -8,7 +8,7 @@ const renderingFontSize = 4
 const renderingFontBase = 4
 export default {
   get () {
-    console.log('try to get Word')
+    // console.log('try to get Word')
     let {
       elementWidth,
       elementHeight,
@@ -141,7 +141,10 @@ export default {
               )
             )
         })
-        .catch(() => { return [] })
+        .catch((err) => {
+          console.log('load error: ', err)
+          return []
+        })
         .then(
           () => {
             console.log('finish word map')
@@ -201,8 +204,8 @@ export default {
                             (data) => {
                               // console.log('get data')
                               // console.log(data)
-                              let posX = data[0]
-                              let posY = data[1]
+                              const posX = data[0]
+                              const posY = data[1]
                               // const [posX, posY] = data
                               ++progress.completedWords
                               // console.log(progress.completedWords)
@@ -239,7 +242,7 @@ export default {
                         }
                       )
                     }
-                    const keys = new Set()
+                    // const keys = new Set()
                     return words.map(
                       (
                         {
@@ -264,8 +267,8 @@ export default {
                           fontVariant,
                           fontStyle
                         ])
-                        console.log(key)
-                        keys.add(key)
+                        // console.log(key)
+                        // keys.add(key)
                         return {
                           key,
                           word,
