@@ -85,7 +85,7 @@ export default {
 
     rotation: {
       type: [Number, Function],
-      default: 0
+      default: '0.25'
     },
 
     rotationUnit: {
