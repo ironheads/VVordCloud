@@ -86,7 +86,10 @@ export default {
       'Righteous',
       'Sacramento',
       'Shadows Into Light',
-    ]
+    ],
+    loadFont: function(fontFamily, fontStyle, fontWeight, text) {
+      return (new FontFaceObserver(fontFamily, {style: fontStyle, weight: fontWeight})).load(text);
+    }
   }),
   components: {
     Figure
@@ -147,3 +150,7 @@ export default {
   }
 }
 </script>
+
+<style>
+@import url("https://fonts.googleapis.com/css?family=Abril+Fatface|Annie+Use+Your+Telescope|Anton|Bahiana|Baloo+Bhaijaan|Barrio|Finger+Paint|Fredericka+the+Great|Gloria+Hallelujah|Indie+Flower|Life+Savers|Londrina+Sketch|Love+Ya+Like+A+Sister|Merienda|Nothing+You+Could+Do|Pacifico|Quicksand|Righteous|Roboto:100,300,400,500,700,900|Sacramento|Shadows+Into+Light");
+</style>
