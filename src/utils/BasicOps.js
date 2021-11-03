@@ -1,5 +1,5 @@
 
-export { castFunction, isString, isArray, isFunction, isObject, isUndefined, CeilDivisible, workerCall, convertMap, stubNullFunction }
+export { castFunction, constFunction, isString, isArray, isFunction, isObject, isUndefined, CeilDivisible, workerCall, convertMap, stubNullFunction }
 
 // Function Operations
 function isFunction (value) {

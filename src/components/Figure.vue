@@ -1,7 +1,7 @@
 
 <script>
 import Word from '@/utils/Word'
-import { convertMap, isObject, isString, stubNullFunction } from '@/utils/BasicOps'
+import { constFunction, convertMap, isObject, isString, stubNullFunction } from '@/utils/BasicOps'
 
 export default {
   name: 'wordCloudFigure',
@@ -43,7 +43,7 @@ export default {
 
     enterAnimation: {
       type: [Object, String],
-      default: '{opacity: 0}'
+      default: constFunction({opacity: 0})
     },
 
     fontFamily: {
@@ -190,7 +190,41 @@ export default {
       }
 
       return {}
+    },
+    normalizedAnimationOverlap () {
+      let { animationOverlap } = this
+      animationOverlap = Math.abs(animationOverlap)
+      if (animationOverlap === 0) {
+        animationOverlap += 0.1
+      }
+      if (animationOverlap < 1) {
+        animationOverlap = 1 / animationOverlap
+      }
+      return animationOverlap
+    },
+    separateAnimationDelay () {
+      const { Word } = this
+      if (Word.length > 1) {
+        const {
+          animationDuration,
+          separateAnimationDuration
+        } = this
+        return (animationDuration - separateAnimationDuration) / (Word.length - 1)
+      }
+      return 0
+    },
+    separateAnimationDuration () {
+      const { Word } = this
+      if (Word.length > 0) {
+        const {
+          animationDuration,
+          normalizedAnimationOverlap: animationOverlap
+        } = this
+        return animationDuration / Math.min(animationOverlap, Word.length)
+      }
+      return 0
     }
+
   },
   components: {
 

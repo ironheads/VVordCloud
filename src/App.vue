@@ -5,7 +5,7 @@
         <v-switch
           class="ma-0 pa-0"
           hide-details
-          label="show progress"
+          label="显示进度"
           v-model="progressVisible"
         ></v-switch>
 			</div>
@@ -14,16 +14,19 @@
       <v-textarea
           :rows="9"
           variant
-          label="words & weights"
+          label="词 & 权重"
           v-model='wordsText'
           ></v-textarea>
         <v-btn
           block
           color="primary"
           @click="generateWordsText"
-        >generate randomly</v-btn>
+        >随机生成</v-btn>
       </div>
       <v-divider></v-divider>
+      <div style="display: grid; gap: 16px;padding: 8px;">
+        <v-select :items="fontFamilyValues" filled label="字体" v-model="fontFamily"></v-select>
+      </div>
     </v-navigation-drawer>
     <v-app-bar app dark>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -35,7 +38,7 @@
     </v-app-bar>
     <v-main>
       <v-container fill-height overflow-hidden>
-        <Figure :words="words"> </Figure>
+        <Figure :words="words" :color="color" :font-family="fontFamily"> </Figure>
       </v-container>
     </v-main>
   </v-app>
@@ -52,14 +55,44 @@ export default {
     drawer: true,
     theme: 'light',
     progressVisible: true,
-    wordsText: undefined
+    wordsText: undefined,
+    chance: new Chance(Math.random),
+    colorItemIndex: undefined,
+    colorItems: [
+      ['#d99cd1', '#c99cd1', '#b99cd1', '#a99cd1'],
+      ['#99f574', '#be3d3d'],
+      ['#a1ec88', '#eed35f', '#f1a674'],
+      ['#ffd077', '#53f2f6', '#3ba4f5', '#fa536c', '#461e47']
+    ],
+    fontFamily: undefined,
+    fontFamilyValues: [
+      'Abril Fatface',
+      'Annie Use Your Telescope',
+      'Anton',
+      'Bahiana',
+      'Baloo Bhaijaan',
+      'Barrio',
+      'Finger Paint',
+      'Fredericka the Great',
+      'Gloria Hallelujah',
+      'Indie Flower',
+      'Life Savers',
+      'Londrina Sketch',
+      'Love Ya Like A Sister',
+      'Merienda',
+      'Nothing You Could Do',
+      'Pacifico',
+      'Quicksand',
+      'Righteous',
+      'Sacramento',
+      'Shadows Into Light',
+    ]
   }),
   components: {
     Figure
   },
   methods: {
     generateWordsText: function () {
-      var chance = new Chance(Math.random)
       this.wordsText = [
         [9, 1, 3],
         [4, 5, 15],
@@ -82,7 +115,10 @@ export default {
   },
 
   created: function () {
+    // var chance = new Chance(Math.random())
     this.generateWordsText()
+    this.colorItemIndex = chance.integer({ min: 0, max: this.colorItems.length - 1 })
+    this.fontFamily = chance.pickone(this.fontFamilyValues)
   },
 
   computed: {
@@ -100,6 +136,13 @@ export default {
           var weight = Number(matched[2])
           return [text, weight]
         })
+    },
+    color: function () {
+      var colors = this.colorItems[this.colorItemIndex]
+      console.log(this.colorItemIndex)
+      return function () {
+        return chance.pickone(colors)
+      }
     }
   }
 }
