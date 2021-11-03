@@ -1,6 +1,7 @@
 
 <script>
-import Word from '@/components/Word'
+import Word from '@/utils/Word'
+import { convertMap, isObject, isString, stubNullFunction } from '@/utils/BasicOps'
 
 export default {
   name: 'wordCloudFigure',
@@ -94,7 +95,7 @@ export default {
 
     spacing: {
       type: Number,
-      default: 0
+      default: 0.15
     },
 
     text: {
@@ -117,7 +118,7 @@ export default {
     }
   },
   data: () => ({
-    test: 34
+
   }),
 
   asyncComputed: {
@@ -131,7 +132,65 @@ export default {
   },
 
   computed: {
+    animationOptions () {
+      const {
+        animationDuration,
+        enterAnimation,
+        leaveAnimation
+      } = this
+      if (isString(enterAnimation) && isString(leaveAnimation)) {
+        return {
+          props: {
+            duration: animationDuration,
+            appear: true,
+            appearActiveClass: enterAnimation,
+            enterActiveClass: enterAnimation,
+            leaveActiveClass: leaveAnimation
+          }
+        }
+      }
+      if (isObject(enterAnimation) && isObject(leaveAnimation)) {
+        const remainAnimation = convertMap(
+          {
+            ...enterAnimation,
+            ...leaveAnimation
+          },
+          stubNullFunction
+        )
+        const beforeEnter = (el) => {
+          Object.assign(el.style, enterAnimation)
+        }
+        const enter = (el, done) => {
+          setTimeout(
+            () => {
+              Object.assign(el.style, remainAnimation)
+              setTimeout(done, animationDuration)
+            },
+            1
+          )
+        }
+        const leave = (el, done) => {
+          Object.assign(el.style, leaveAnimation)
+          setTimeout(done, animationDuration)
+        }
+        const beforeAppear = beforeEnter
+        const appear = enter
+        return {
+          props: {
+            css: false
+          },
+          on: {
+            beforeAppear,
+            appear,
+            beforeEnter,
+            enter,
+            leave
+          }
+        }
+      }
 
+      return {}
+    }
   },
   components: {
 

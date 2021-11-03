@@ -32,9 +32,9 @@ export default {
 
     fontSizeRatio = getNormalizedFontSizeRatio(fontSizeRatio)
     const elementAspect = getNormalizedAspect([elementWidth, elementHeight])
-    console.log(elementWidth)
-    console.log(elementHeight)
-    console.log(elementAspect)
+    // console.log(elementWidth)
+    // console.log(elementHeight)
+    // console.log(elementAspect)
     if (elementHeight > 0 && elementWidth > 0) {
       const getDefaultText = castFunction(text)
       const getDefaultWeight = castFunction(weight)

@@ -15,3 +15,5 @@ new Vue({
   vuetify,
   render: h => h(App)
 }).$mount('#app')
+import { castFunction, convertMap } from '../src/utils/BasicOps'
+

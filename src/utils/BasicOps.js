@@ -1,5 +1,5 @@
 
-export { castFunction, isString, isArray, isFunction, isObject, isUndefined, CeilDivisible, workerCall }
+export { castFunction, isString, isArray, isFunction, isObject, isUndefined, CeilDivisible, workerCall, convertMap, stubNullFunction }
 
 // Function Operations
 function isFunction (value) {
@@ -16,6 +16,9 @@ function constFunction (value) {
   }
 }
 
+function stubNullFunction () {
+  return constFunction(null)
+}
 // String Operations
 function isString (value) {
   return typeof value === 'string'
@@ -71,3 +74,15 @@ function getWorkerMessage (worker) {
     }
   )
 }
+
+// convert data to Map
+function convertMap (object, iteratee) {
+  let result = {}
+  Object.entries(object).forEach(
+    ([key, value]) => {
+      result[key] = iteratee(value,key,object)
+    }
+  )
+  return result
+}
+

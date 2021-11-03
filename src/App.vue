@@ -49,7 +49,7 @@ export default {
   props: {
   },
   data: () => ({
-    drawer: false,
+    drawer: true,
     theme: 'light',
     progressVisible: true,
     wordsText: undefined
@@ -80,9 +80,11 @@ export default {
         .join('\n')
     }
   },
+
   created: function () {
     this.generateWordsText()
   },
+
   computed: {
     words: function () {
       return this.wordsText
