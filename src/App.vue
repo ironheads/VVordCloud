@@ -1,14 +1,18 @@
 <template>
   <v-app v-cloak :theme="theme">
     <v-navigation-drawer app v-model="drawer" >
-      <div style="padding: 8px;">
-        <v-switch
-          class="ma-0 pa-0"
-          hide-details
-          label="显示进度"
-          v-model="progressVisible"
-        ></v-switch>
-			</div>
+<!--      <div style="padding: 8px;">-->
+<!--        <v-switch-->
+<!--          class="ma-0 pa-0"-->
+<!--          hide-details-->
+<!--          label="显示进度"-->
+<!--          v-model="progressVisible"-->
+<!--        ></v-switch>-->
+<!--			</div>-->
+<!--      <v-divider></v-divider>-->
+      <div style="display: grid; gap: 16px;padding: 8px;">
+        <v-select :items="fontFamilyValues" filled label="字体" v-model="fontFamily"></v-select>
+      </div>
 			<v-divider></v-divider>
       <div style="display: grid; gap: 8px; padding: 8px;">
       <v-textarea
@@ -24,8 +28,49 @@
         >随机生成</v-btn>
       </div>
       <v-divider></v-divider>
-      <div style="display: grid; gap: 16px;padding: 8px;">
-        <v-select :items="fontFamilyValues" filled label="字体" v-model="fontFamily"></v-select>
+      <v-card>
+      <div>
+        <v-subheader>color</v-subheader>
+        <v-card-text>
+<!--        <div align="center">-->
+          <v-btn-toggle
+            dense
+            mandatory
+            v-model="colorItemIndex"
+          >
+            <v-btn
+              v-for="(item, itemIndex) in colorItems"
+              :key="itemIndex"
+              :value="itemIndex"
+              icon
+            >
+              <div
+                style="
+                      display: flex;
+                      height: 24px;
+                      margin: 2px;
+                      width: 24px;
+                    "
+              >
+                <div
+                  v-for="color in item"
+                  :style="{backgroundColor: color}"
+                  style="flex: 1 1 0%;"
+                ></div>
+              </div>
+            </v-btn>
+          </v-btn-toggle>
+
+<!--        </div>-->
+          </v-card-text>
+      </div>
+      </v-card>
+      <v-divider></v-divider>
+      <div>
+        <v-subheader>rotation</v-subheader>
+        <v-range-slider
+          v-model="rotationRate"
+        ></v-range-slider>
       </div>
     </v-navigation-drawer>
     <v-app-bar app dark>
@@ -38,7 +83,7 @@
     </v-app-bar>
     <v-main>
       <v-container fill-height overflow-hidden>
-        <Figure :words="words" :color="color" :font-family="fontFamily"> </Figure>
+        <Figure :words="words" :color="color" :font-family="fontFamily" :rotation-rate="rotationRate" :rotation="rotation"> </Figure>
       </v-container>
     </v-main>
   </v-app>
@@ -85,11 +130,12 @@ export default {
       'Quicksand',
       'Righteous',
       'Sacramento',
-      'Shadows Into Light',
+      'Shadows Into Light'
     ],
-    loadFont: function(fontFamily, fontStyle, fontWeight, text) {
-      return (new FontFaceObserver(fontFamily, {style: fontStyle, weight: fontWeight})).load(text);
-    }
+    loadFont: function (fontFamily, fontStyle, fontWeight, text) {
+      return (new FontFaceObserver(fontFamily, { style: fontStyle, weight: fontWeight })).load(text)
+    },
+    rotationRate: [30,60]
   }),
   components: {
     Figure
@@ -122,6 +168,8 @@ export default {
     this.generateWordsText()
     this.colorItemIndex = chance.integer({ min: 0, max: this.colorItems.length - 1 })
     this.fontFamily = chance.pickone(this.fontFamilyValues)
+    this.rotationRate = [30,60]
+    console.log(this.rotation())
   },
 
   computed: {
@@ -142,9 +190,14 @@ export default {
     },
     color: function () {
       var colors = this.colorItems[this.colorItemIndex]
-      console.log(this.colorItemIndex)
+      // console.log(this.colorItemIndex)
       return function () {
         return chance.pickone(colors)
+      }
+    },
+    rotation: function () {
+      return function () {
+        return (chance.integer({ min: 20, max: 80 })- 50 ) / 200
       }
     }
   }
