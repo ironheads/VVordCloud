@@ -147,7 +147,7 @@ export default {
         })
         .then(
           () => {
-            console.log('finish word map')
+            // console.log('finish word map')
             words = words.filter(({ のtextWidth }) => { return のtextWidth > 0 })
               .sort((a, b) => { return b.のweight - a.のweight })
             if (words.length > 0) {
@@ -175,7 +175,6 @@ export default {
                     this.progress = progress
                     return workerCall(wordPositionWorker, { name: 'setAspect', args: [elementAspect] })
                       .then(() => { return workerCall(wordPositionWorker, { name: 'clear' }) })
-                      .then(() => { console.log('worker call success') })
                   }
                 )
                 .then(
