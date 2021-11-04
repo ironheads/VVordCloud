@@ -10,11 +10,11 @@
 <!--        ></v-switch>-->
 <!--			</div>-->
 <!--      <v-divider></v-divider>-->
-      <div style="display: grid; gap: 16px;padding: 8px;">
+      <v-card style="display: grid; gap: 8px;padding: 8px;">
         <v-select :items="fontFamilyValues" filled label="字体" v-model="fontFamily"></v-select>
-      </div>
+      </v-card>
 			<v-divider></v-divider>
-      <div style="display: grid; gap: 8px; padding: 8px;">
+      <v-card style="display: grid; gap: 8px; padding: 8px;">
       <v-textarea
           :rows="9"
           variant
@@ -26,52 +26,49 @@
           color="primary"
           @click="generateWordsText"
         >随机生成</v-btn>
-      </div>
+      </v-card>
       <v-divider></v-divider>
       <v-card>
       <div>
-        <v-subheader>color</v-subheader>
+        <v-subheader>颜色</v-subheader>
         <v-card-text>
-<!--        <div align="center">-->
-          <v-btn-toggle
-            dense
-            mandatory
-            v-model="colorItemIndex"
-          >
-            <v-btn
-              v-for="(item, itemIndex) in colorItems"
-              :key="itemIndex"
-              :value="itemIndex"
-              icon
+            <v-btn-toggle
+              dense
+              mandatory
+              v-model="colorItemIndex"
             >
-              <div
-                style="
-                      display: flex;
-                      height: 24px;
-                      margin: 2px;
-                      width: 24px;
-                    "
+              <v-btn
+                v-for="(item, itemIndex) in colorItems"
+                :key="itemIndex"
+                :value="itemIndex"
+                icon
               >
                 <div
-                  v-for="color in item"
-                  :style="{backgroundColor: color}"
-                  style="flex: 1 1 0%;"
-                ></div>
-              </div>
-            </v-btn>
-          </v-btn-toggle>
-
-<!--        </div>-->
+                  style="
+                        display: flex;
+                        height: 24px;
+                        margin: 2px;
+                        width: 24px;
+                      "
+                >
+                  <div
+                    v-for="color in item"
+                    :style="{backgroundColor: color}"
+                    style="flex: 1 1 0%;"
+                  ></div>
+                </div>
+              </v-btn>
+            </v-btn-toggle>
           </v-card-text>
       </div>
       </v-card>
       <v-divider></v-divider>
-      <div>
-        <v-subheader>rotation</v-subheader>
+      <v-card>
+        <v-subheader>旋转角度范围</v-subheader>
         <v-range-slider
           v-model="rotationRate"
         ></v-range-slider>
-      </div>
+      </v-card>
     </v-navigation-drawer>
     <v-app-bar app dark>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -135,7 +132,7 @@ export default {
     loadFont: function (fontFamily, fontStyle, fontWeight, text) {
       return (new FontFaceObserver(fontFamily, { style: fontStyle, weight: fontWeight })).load(text)
     },
-    rotationRate: [30,60]
+    rotationRate: [30, 60]
   }),
   components: {
     Figure
@@ -168,8 +165,8 @@ export default {
     this.generateWordsText()
     this.colorItemIndex = chance.integer({ min: 0, max: this.colorItems.length - 1 })
     this.fontFamily = chance.pickone(this.fontFamilyValues)
-    this.rotationRate = [30,60]
-    console.log(this.rotation())
+    this.rotationRate = [30, 60]
+    // console.log(this.rotation())
   },
 
   computed: {
@@ -196,8 +193,10 @@ export default {
       }
     },
     rotation: function () {
+      let minval=this.rotationRate[0]
+      let maxval = this.rotationRate[1]
       return function () {
-        return (chance.integer({ min: 20, max: 80 })- 50 ) / 200
+        return (chance.integer({ min: minval, max: maxval }) - 50) / 200
       }
     }
   }
