@@ -13,7 +13,7 @@
       <v-card style="display: grid; gap: 8px;padding: 8px;">
         <v-select :items="fontFamilyValues" filled label="字体" v-model="fontFamily"></v-select>
       </v-card>
-			<v-divider></v-divider>
+<!--			<v-divider></v-divider>-->
       <v-card style="display: grid; gap: 8px; padding: 8px;">
       <v-textarea
           :rows="9"
@@ -27,7 +27,7 @@
           @click="generateWordsText"
         >随机生成</v-btn>
       </v-card>
-      <v-divider></v-divider>
+<!--      <v-divider></v-divider>-->
       <v-card>
       <div>
         <v-subheader>颜色</v-subheader>
@@ -62,11 +62,17 @@
           </v-card-text>
       </div>
       </v-card>
-      <v-divider></v-divider>
+<!--      <v-divider></v-divider>-->
       <v-card>
         <v-subheader>旋转角度范围</v-subheader>
         <v-range-slider
-          v-model="rotationRate"
+          v-model.lazy="rotationRate"
+          :min="-90"
+          :max="90"
+          thumb-label
+          prepend-icon="mdi-format-text-rotation-angle-up"
+          append-icon="mdi-format-text-rotation-angle-down"
+          step="15"
         ></v-range-slider>
       </v-card>
     </v-navigation-drawer>
@@ -80,7 +86,7 @@
     </v-app-bar>
     <v-main>
       <v-container fill-height overflow-hidden>
-        <Figure :words="words" :color="color" :font-family="fontFamily" :rotation-rate="rotationRate" :rotation="rotation"> </Figure>
+        <Figure :words="words" :color="color" :font-family="fontFamily" :rotation-unit="'deg'" :rotation="rotation"> </Figure>
       </v-container>
     </v-main>
   </v-app>
@@ -132,7 +138,7 @@ export default {
     loadFont: function (fontFamily, fontStyle, fontWeight, text) {
       return (new FontFaceObserver(fontFamily, { style: fontStyle, weight: fontWeight })).load(text)
     },
-    rotationRate: [30, 60]
+    rotationRate: undefined
   }),
   components: {
     Figure
@@ -165,7 +171,7 @@ export default {
     this.generateWordsText()
     this.colorItemIndex = chance.integer({ min: 0, max: this.colorItems.length - 1 })
     this.fontFamily = chance.pickone(this.fontFamilyValues)
-    this.rotationRate = [30, 60]
+    this.rotationRate = [-30, 30]
     // console.log(this.rotation())
   },
 
@@ -196,7 +202,7 @@ export default {
       let minval=this.rotationRate[0]
       let maxval = this.rotationRate[1]
       return function () {
-        return (chance.integer({ min: minval, max: maxval }) - 50) / 200
+        return chance.integer({ min: minval, max: maxval })
       }
     }
   }
