@@ -2,6 +2,7 @@
 <script>
 import Word from '@/utils/Word'
 import { constFunction, convertMap, isObject, isString, stubNullFunction } from '@/utils/BasicOps'
+import elementResizeDetectorMaker from 'element-resize-detector'
 
 export default {
   name: 'wordCloudFigure',
@@ -115,10 +116,11 @@ export default {
     level: {
       type: Number,
       default: 1
-    }
+    },
   },
   data: () => ({
-
+    elementWidth: undefined,
+    elementHeight: undefined
   }),
 
   asyncComputed: {
@@ -224,7 +226,6 @@ export default {
       }
       return 0
     }
-
   },
   components: {
 
@@ -249,11 +250,14 @@ export default {
   },
 
   mounted () {
-    console.log('mounted')
-    // console.log(this.$el)
     this.updateElementSize()
-
-    this.$asyncComputed.Word.update()
+    var elementResizeDetectorMaker = require('element-resize-detector')
+    var erd = elementResizeDetectorMaker()
+    let that = this
+    erd.listenTo(this.$el, function (element) {
+      that.elementWidth=element.offsetWidth
+      that.elementHeight=element.offsetHeight
+    })
   },
   render (createElement) {
     let {
