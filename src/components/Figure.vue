@@ -268,15 +268,6 @@ export default {
       separateAnimationDelay,
       separateAnimationDuration
     } = this
-    // console.log($scopedSlots)
-    $scopedSlots = {
-      default ({ text }) {
-        // console.log(text)
-        return text
-      },
-      ...$scopedSlots
-    }
-    // console.log($scopedSlots)
     return createElement(
       'div',
       {

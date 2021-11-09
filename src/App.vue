@@ -86,7 +86,22 @@
     </v-app-bar>
     <v-main>
       <v-container fill-height overflow-hidden>
-        <Figure :words="words" :color="color" :font-family="fontFamily" :rotation-unit="'deg'" :rotation="rotation"> </Figure>
+        <Figure :words="words" :color="color" :font-family="fontFamily" :rotation-unit="'deg'" :rotation="rotation">
+          <template v-slot="props">
+            <v-tooltip top>
+              <template v-slot:activator="{on}">
+                <div
+                  style="cursor: pointer;"
+                  v-on="on">
+                  {{props.text}}
+                </div>
+              </template>
+                <div
+                  style="text-align: center;"
+                >{{ props.text }}<br/>({{ props.weight }})</div>
+            </v-tooltip>
+          </template>
+        </Figure>
       </v-container>
     </v-main>
   </v-app>
