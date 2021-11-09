@@ -1,8 +1,11 @@
 <template>
   <div style="height: 100%; position: relative;width:100%;">
     <div style="bottom: 50%; position: absolute;right: 50%;transform: translate(50%, 50%)">
-      <word-element v-for="(item, index) in Word"
-                    :key="index"
+<!--      <transition-group name="fade">-->
+      <word-element
+                    transition
+                    v-for="(item, index) in Word"
+                    :key="item.textindex"
                     :index="index"
                     :text="item.text"
                     :color="item.color"
@@ -16,6 +19,7 @@
                     :rotation="item.rotation"
       >
       </word-element>
+<!--      </transition-group>-->
     </div>
   </div>
 </template>

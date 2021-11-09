@@ -1,15 +1,6 @@
 <template>
   <v-app v-cloak :theme="theme">
     <v-navigation-drawer app v-model="drawer" >
-<!--      <div style="padding: 8px;">-->
-<!--        <v-switch-->
-<!--          class="ma-0 pa-0"-->
-<!--          hide-details-->
-<!--          label="显示进度"-->
-<!--          v-model="progressVisible"-->
-<!--        ></v-switch>-->
-<!--			</div>-->
-<!--      <v-divider></v-divider>-->
       <v-card style="display: grid; gap: 8px;padding: 8px;">
         <v-select :items="fontFamilyValues" filled label="字体" v-model="fontFamily"></v-select>
       </v-card>
@@ -27,7 +18,6 @@
           @click="generateWordsText"
         >随机生成</v-btn>
       </v-card>
-<!--      <v-divider></v-divider>-->
       <v-card>
       <div>
         <v-subheader>颜色</v-subheader>
@@ -52,7 +42,8 @@
                       "
                 >
                   <div
-                    v-for="color in item"
+                    v-for="(color,index) in item"
+                    :key="index"
                     :style="{backgroundColor: color}"
                     style="flex: 1 1 0%;"
                   ></div>
@@ -86,7 +77,13 @@
     </v-app-bar>
     <v-main>
       <v-container fill-height overflow-hidden>
-        <word-cloud-figure :words="words" :color="color" :font-family="fontFamily" :rotation-unit="'deg'" :rotation="rotation">
+        <word-cloud-figure
+          :words="words"
+          :color="color"
+          :font-family="fontFamily"
+          :rotation-unit="'deg'"
+          :rotation="rotation"
+        >
         </word-cloud-figure>
       </v-container>
     </v-main>
@@ -94,7 +91,6 @@
 </template>
 
 <script>
-import Figure from './components/WordCloudFigure'
 import 'chance'
 import WordCloudFigure from '@/components/WordCloudFigure'
 export default {
@@ -124,7 +120,6 @@ export default {
       'Barrio',
       'Finger Paint',
       'Fredericka the Great',
-      'Gloria Hallelujah',
       'Indie Flower',
       'Life Savers',
       'Londrina Sketch',
@@ -142,8 +137,7 @@ export default {
     rotationRate: undefined
   }),
   components: {
-    WordCloudFigure,
-    Figure
+    WordCloudFigure
   },
   methods: {
     generateWordsText: function () {
@@ -207,8 +201,8 @@ export default {
       }
     },
     rotation: function () {
-      let minval=this.rotationRate[0]
-      let maxval = this.rotationRate[1]
+      const minval = this.rotationRate[0]
+      const maxval = this.rotationRate[1]
       return function () {
         return chance.integer({ min: minval, max: maxval })
       }
