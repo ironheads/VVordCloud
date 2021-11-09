@@ -1,11 +1,31 @@
-
+<template>
+  <div style="height: 100%; position: relative;width:100%;">
+    <div style="bottom: 50%; position: absolute;right: 50%;transform: translate(50%, 50%)">
+      <word-element v-for="(item, index) in Word"
+                    :key="index"
+                    :index="index"
+                    :text="item.text"
+                    :color="item.color"
+                    :animation-easing="animationEasing"
+                    :animation-duration="1000"
+                    :separate-animation-delay="separateAnimationDelay"
+                    :font="item.font"
+                    :left="item.left"
+                    :top="item.top"
+                    :weight="item.weight"
+                    :rotation="item.rotation"
+      >
+      </word-element>
+    </div>
+  </div>
+</template>
 <script>
 import Word from '@/utils/Word'
 import { constFunction, convertMap, isObject, isString, stubNullFunction } from '@/utils/BasicOps'
 import elementResizeDetectorMaker from 'element-resize-detector'
-
+import WordElement from '@/components/WordElement'
 export default {
-  name: 'wordCloudFigure',
+  name: 'WordCloudFigure',
   props: {
     animationDuration: {
       type: Number,
@@ -44,7 +64,7 @@ export default {
 
     enterAnimation: {
       type: [Object, String],
-      default: constFunction({opacity: 0})
+      default: constFunction({ opacity: 0 })
     },
 
     fontFamily: {
@@ -116,7 +136,7 @@ export default {
     level: {
       type: Number,
       default: 1
-    },
+    }
   },
   data: () => ({
     elementWidth: undefined,
@@ -128,9 +148,7 @@ export default {
   },
 
   watch: {
-    // Word: (val) => {
-    //   this.$emit('Update:Word', val)
-    // }
+
   },
 
   computed: {
@@ -228,6 +246,7 @@ export default {
     }
   },
   components: {
+    WordElement
 
   },
 
@@ -245,128 +264,17 @@ export default {
   },
 
   beforeCreate () {
-    // console.log('beforeCreated')
-    // this.updateElementSize()
   },
 
   mounted () {
     this.updateElementSize()
     var elementResizeDetectorMaker = require('element-resize-detector')
     var erd = elementResizeDetectorMaker()
-    let that = this
+    const that = this
     erd.listenTo(this.$el, function (element) {
-      that.elementWidth=element.offsetWidth
-      that.elementHeight=element.offsetHeight
+      that.elementWidth = element.offsetWidth
+      that.elementHeight = element.offsetHeight
     })
-  },
-  render (createElement) {
-    let {
-      $scopedSlots,
-      animationEasing,
-      animationOptions,
-      Word,
-      separateAnimationDelay,
-      separateAnimationDuration
-    } = this
-    return createElement(
-      'div',
-      {
-        style: {
-          height: '100%',
-          position: 'relative',
-          width: '100%'
-        }
-      },
-      [createElement(
-        'div',
-        {
-          style: {
-            bottom: '50%',
-            position: 'absolute',
-            right: '50%',
-            transform: 'translate(50%,50%)'
-          }
-        },
-        Word.map(({
-          color,
-          font,
-          left,
-          rotation,
-          text,
-          top,
-          weight,
-          word
-        }, index) => createElement(
-          'transition',
-          { ...animationOptions },
-          [createElement(
-            'div',
-            {
-              key: index,
-              style: {
-                left: `${left}px`,
-                position: 'absolute',
-                top: `${top}px`,
-                ...((separateAnimationDuration > 0)
-                  ? {
-                    animation: [
-                        `${separateAnimationDuration}ms`,
-                        animationEasing,
-                        `${separateAnimationDelay * index}ms`
-                    ].join(' '),
-                    transition: [
-                      'all',
-                        `${separateAnimationDuration}ms`,
-                        animationEasing,
-                        `${separateAnimationDelay * index}ms`
-                    ].join(' ')
-                  }
-                  : {}
-                )
-              }
-            },
-            [createElement(
-              'div',
-              {
-                style: {
-                  bottom: '50%',
-                  color: color,
-                  font: font,
-                  position: 'absolute',
-                  right: '50%',
-                  transform: [
-                    'translate(50%,50%)',
-                    `rotate(${rotation}rad)`
-                  ].join(' '),
-                  whiteSpace: 'nowrap',
-                  ...((separateAnimationDuration > 0)
-                    ? {
-                      transition: [
-                        'all',
-                          `${separateAnimationDuration}ms`,
-                          animationEasing,
-                          `${separateAnimationDelay * index}ms`
-                      ].join(' ')
-                    }
-                    : {}
-                  )
-                }
-              },
-              [$scopedSlots.default({
-                color,
-                font,
-                left,
-                text,
-                top,
-                weight,
-                word
-              })]
-            )]
-          )]
-        ))
-      )]
-    )
   }
-
 }
 </script>

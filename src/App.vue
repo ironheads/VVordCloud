@@ -86,30 +86,17 @@
     </v-app-bar>
     <v-main>
       <v-container fill-height overflow-hidden>
-        <Figure :words="words" :color="color" :font-family="fontFamily" :rotation-unit="'deg'" :rotation="rotation">
-          <template v-slot="props">
-            <v-tooltip top>
-              <template v-slot:activator="{on}">
-                <div
-                  style="cursor: pointer;"
-                  v-on="on">
-                  {{props.text}}
-                </div>
-              </template>
-                <div
-                  style="text-align: center;"
-                >{{ props.text }}<br/>({{ props.weight }})</div>
-            </v-tooltip>
-          </template>
-        </Figure>
+        <word-cloud-figure :words="words" :color="color" :font-family="fontFamily" :rotation-unit="'deg'" :rotation="rotation">
+        </word-cloud-figure>
       </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Figure from './components/Figure'
+import Figure from './components/WordCloudFigure'
 import 'chance'
+import WordCloudFigure from '@/components/WordCloudFigure'
 export default {
   name: 'App',
   props: {
@@ -147,8 +134,7 @@ export default {
       'Pacifico',
       'Quicksand',
       'Righteous',
-      'Sacramento',
-      'Shadows Into Light'
+      'Sacramento'
     ],
     loadFont: function (fontFamily, fontStyle, fontWeight, text) {
       return (new FontFaceObserver(fontFamily, { style: fontStyle, weight: fontWeight })).load(text)
@@ -156,6 +142,7 @@ export default {
     rotationRate: undefined
   }),
   components: {
+    WordCloudFigure,
     Figure
   },
   methods: {
@@ -178,6 +165,12 @@ export default {
           return returns
         }, [])
         .join('\n')
+    },
+    MoveIn: function () {
+      console.log(this)
+    },
+    MoveOut: function () {
+      console.log(this)
     }
   },
 

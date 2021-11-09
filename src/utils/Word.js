@@ -190,12 +190,6 @@ export default {
                           .then(
                             () => {
                               currentWord.のpadding = spacing
-                              // let result = workerCall(wordPositionWorker, { name: 'wordPosition', args: [currentWord.のimagePixels, currentWord.のimageLeft, currentWord.のimageTop] })
-                              // console.log(currentWord.のimagePixels)
-                              // console.log(currentWord.のimageTop)
-                              // console.log(currentWord.のimageLeft)
-                              // console.log('before')
-                              // console.log(currentWord.のimagePixels.length)
                               return workerCall(wordPositionWorker, { name: 'wordPosition', args: [currentWord.のimagePixels, currentWord.のimageLeft, currentWord.のimageTop] })
                             }
                           )
@@ -227,10 +221,6 @@ export default {
                   }
                 ).then(
                   ({ left, top, width, height }) => {
-                    // console.log(left)
-                    // console.log(top)
-                    // console.log(width)
-                    // console.log(height)
                     if (width > 0 && height > 0) {
                       const scaleFactor = Math.min(elementWidth / width, elementHeight / height)
                       words.forEach(
