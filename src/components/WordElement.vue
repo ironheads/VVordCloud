@@ -1,7 +1,7 @@
 <template>
   <transition>
     <div
-      :key="left.toString()+top.toString()"
+      :key="index"
       :style="{
                   left: `${left}px`,
                   position: 'absolute',

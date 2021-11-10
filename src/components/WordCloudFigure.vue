@@ -10,7 +10,7 @@
                     :text="item.text"
                     :color="item.color"
                     :animation-easing="animationEasing"
-                    :animation-duration="1000"
+                    :animation-duration="animationDuration"
                     :separate-animation-delay="separateAnimationDelay"
                     :font="item.font"
                     :left="item.left"
@@ -43,7 +43,7 @@ export default {
 
     animationOverlap: {
       type: Number,
-      default: 1
+      default: 5
     },
 
     color: {
