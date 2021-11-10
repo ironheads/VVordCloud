@@ -4,7 +4,6 @@
       <v-card style="display: grid; gap: 8px;padding: 8px;">
         <v-select :items="fontFamilyValues" filled label="字体" v-model="fontFamily"></v-select>
       </v-card>
-<!--			<v-divider></v-divider>-->
       <v-card style="display: grid; gap: 8px; padding: 8px;">
       <v-textarea
           :rows="9"

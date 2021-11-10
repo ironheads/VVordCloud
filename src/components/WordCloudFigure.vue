@@ -1,7 +1,6 @@
 <template>
   <div style="height: 100%; position: relative;width:100%;">
     <div style="bottom: 50%; position: absolute;right: 50%;transform: translate(50%, 50%)">
-<!--      <transition-group name="fade">-->
       <word-element
                     transition
                     v-for="(item, index) in Word"
@@ -10,7 +9,7 @@
                     :text="item.text"
                     :color="item.color"
                     :animation-easing="animationEasing"
-                    :animation-duration="animationDuration"
+                    :separate-animation-duration="separateAnimationDuration"
                     :separate-animation-delay="separateAnimationDelay"
                     :font="item.font"
                     :left="item.left"
@@ -19,14 +18,11 @@
                     :rotation="item.rotation"
       >
       </word-element>
-<!--      </transition-group>-->
     </div>
   </div>
 </template>
 <script>
 import Word from '@/utils/Word'
-import { constFunction, convertMap, isObject, isString, stubNullFunction } from '@/utils/BasicOps'
-import elementResizeDetectorMaker from 'element-resize-detector'
 import WordElement from '@/components/WordElement'
 export default {
   name: 'WordCloudFigure',
@@ -43,7 +39,7 @@ export default {
 
     animationOverlap: {
       type: Number,
-      default: 5
+      default: 1
     },
 
     color: {
@@ -64,11 +60,6 @@ export default {
         return new Worker(URL.createObjectURL(new Blob([`(${func.toString()})()`])))
         // return new Worker(code)
       }
-    },
-
-    enterAnimation: {
-      type: [Object, String],
-      default: constFunction({ opacity: 0 })
     },
 
     fontFamily: {
@@ -94,11 +85,6 @@ export default {
     fontWeight: {
       type: [String, Function],
       default: 'normal'
-    },
-
-    leaveAnimation: {
-      type: [Object, String],
-      default: '{opacity: 0}'
     },
 
     loadFont: {
@@ -156,65 +142,6 @@ export default {
   },
 
   computed: {
-    animationOptions () {
-      const {
-        animationDuration,
-        enterAnimation,
-        leaveAnimation
-      } = this
-      if (isString(enterAnimation) && isString(leaveAnimation)) {
-        return {
-          props: {
-            duration: animationDuration,
-            appear: true,
-            appearActiveClass: enterAnimation,
-            enterActiveClass: enterAnimation,
-            leaveActiveClass: leaveAnimation
-          }
-        }
-      }
-      if (isObject(enterAnimation) && isObject(leaveAnimation)) {
-        const remainAnimation = convertMap(
-          {
-            ...enterAnimation,
-            ...leaveAnimation
-          },
-          stubNullFunction
-        )
-        const beforeEnter = (el) => {
-          Object.assign(el.style, enterAnimation)
-        }
-        const enter = (el, done) => {
-          setTimeout(
-            () => {
-              Object.assign(el.style, remainAnimation)
-              setTimeout(done, animationDuration)
-            },
-            1
-          )
-        }
-        const leave = (el, done) => {
-          Object.assign(el.style, leaveAnimation)
-          setTimeout(done, animationDuration)
-        }
-        const beforeAppear = beforeEnter
-        const appear = enter
-        return {
-          props: {
-            css: false
-          },
-          on: {
-            beforeAppear,
-            appear,
-            beforeEnter,
-            enter,
-            leave
-          }
-        }
-      }
-
-      return {}
-    },
     normalizedAnimationOverlap () {
       let { animationOverlap } = this
       animationOverlap = Math.abs(animationOverlap)

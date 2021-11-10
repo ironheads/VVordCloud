@@ -36,6 +36,17 @@
                         `rotate(${rotation}rad)`,
                       ].join(' '),
                       whiteSpace: 'nowrap',
+                      ...((separateAnimationDuration > 0)
+                      ? {
+                        transition: [
+                          'all',
+                          `${separateAnimationDuration}ms`,
+                          animationEasing,
+                          `${separateAnimationDelay * index}ms`,
+                        ].join(' '),
+                      }
+                      : {}
+                    )
                   }"
       >
         <v-tooltip top>
