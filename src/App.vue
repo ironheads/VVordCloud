@@ -128,7 +128,6 @@ export default {
       'Pacifico',
       'Quicksand',
       'Righteous',
-      'Sacramento'
     ],
     loadFont: function (fontFamily, fontStyle, fontWeight, text) {
       return (new FontFaceObserver(fontFamily, { style: fontStyle, weight: fontWeight })).load(text)
