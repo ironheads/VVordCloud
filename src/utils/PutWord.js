@@ -62,7 +62,6 @@ export default function () {
   }
 
   function canPut (pixels, x, y) {
-
     const result = pixels.every(
       (data) => {
         const posX = x + data[0]
@@ -71,7 +70,6 @@ export default function () {
       }
     )
     return result
-    // console.log(result)
   }
 
   function findPosition (pixelX, pixelY, testPut) {
@@ -90,16 +88,10 @@ export default function () {
       stepX = 1
       stepY = 1
     }
-    // console.log(stepX)
-    // console.log(stepY)
     const testPosition = [pixelX, pixelY]
-    // console.log(testPosition)
-    // console.log('OK')
     if (testPut(testPosition)) {
-      // console.log('find position')
       return testPosition
     }
-    // console.log('out testPut')
     let minX = pixelX
     let maxX = pixelX
     let minY = pixelY
@@ -157,25 +149,15 @@ export default function () {
   }
 
   const wordPosition = (pixels, WordCenterX, WordCenterY) => {
-    // console.log('find position')
-    // console.log(pixels[12])
-    // console.log(WordCenterX)
-    // console.log(WordCenterY)
-    // console.log(findPosition)
     const X = WordCenterX + getCenterX()
     const Y = WordCenterY + getCenterY()
-    // console.log(X)
-    // console.log(Y)
     const result = findPosition(
       X, Y,
       (data) => {
-        // console.log('in testPut')
-        // console.log(data[1])
         return canPut(pixels, data[0], data[1])
       }
 
     )
-    // console.log('get result')
     return result
   }
 

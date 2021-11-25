@@ -179,7 +179,6 @@ export default class BoundingWord {
     const canvas = createCanvas()
     const ctx = canvas.getContext('2d')
     ctx.font = font
-    // console.log(ctx.measureText(text).width)
     return ctx.measureText(text).width
   }
 

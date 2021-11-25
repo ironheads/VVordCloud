@@ -155,13 +155,10 @@ export default {
               const smallestWord = words[words.length - 1]
               const maxWeight = biggestWord.のweight
               const minWeight = smallestWord.のweight
-              // TODO: different ways to change weights
               words.forEach(word => {
                 word.のfontSize = Math.ceil((word.のweight - minWeight) / 3) * renderingFontSize + renderingFontBase
               })
 
-              // (AsyncComputed also need to try)
-              // console.log(PutWord.toString())
               const wordPositionWorker = createWorker(PutWord)
               // const wordPositionWorker = new Worker(PutWord)
               const progress = {
@@ -195,18 +192,12 @@ export default {
                           )
                           .then(
                             (data) => {
-                              // console.log('get data')
-                              // console.log(data)
                               const posX = data[0]
                               const posY = data[1]
-                              // const [posX, posY] = data
                               ++progress.completedWords
-                              // console.log(progress.completedWords)
                               currentWord.のimageLeft = posX
                               currentWord.のimageTop = posY
                               currentWord.のpadding = 0
-                              // console.log('after')
-                              // console.log(currentWord.のimagePixels.length)
                               return workerCall(wordPositionWorker, { name: 'put', args: [currentWord.のimagePixels, currentWord.のimageLeft, currentWord.のimageTop] })
                             }
                           )
@@ -231,7 +222,6 @@ export default {
                         }
                       )
                     }
-                    // const keys = new Set()
                     return words.map(
                       (
                         {

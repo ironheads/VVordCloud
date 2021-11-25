@@ -4,7 +4,7 @@
       <word-element
                     transition
                     v-for="(item, index) in Word"
-                    :key="item.textindex"
+                    :key="item.text+index"
                     :index="index"
                     :text="item.text"
                     :color="item.color"
@@ -67,11 +67,6 @@ export default {
       default: 'serif'
     },
 
-    fontSizeRatio: {
-      type: Number,
-      default: 0
-    },
-
     fontStyle: {
       type: [String, Function],
       default: 'normal'
@@ -118,7 +113,6 @@ export default {
       type: [Number, Function],
       default: 1
     },
-
     words: {
       type: Array,
       default: () => { return [] }
@@ -178,7 +172,6 @@ export default {
   },
   components: {
     WordElement
-
   },
 
   methods: {
